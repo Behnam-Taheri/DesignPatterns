@@ -13,4 +13,8 @@ subject.Add(support);
 
 subject.Score = 17;
 
+subject.Remove(parent);
+
+subject.Score = 7;
+
 Console.ReadKey();

@@ -2,7 +2,10 @@
 
 public class Subject : ISubject
 {
-    private List<IObserver> observers;
+    public delegate void Updater(int score);
+
+    private Updater? updaters;
+
     public int Score
     {
         set
@@ -10,28 +13,26 @@ public class Subject : ISubject
             Notify(value);
         }
     }
-    public Subject()
-    {
-        this.observers = new List<IObserver>();
-    }
+    public Subject() { }
 
     public void Add(IObserver observer)
     {
-        observers.Add(observer);
+        updaters += observer.Update;
     }
 
     public void Remove(IObserver observer)
     {
-        observers.Remove(observer);
+        updaters -= observer.Update;
     }
 
-   public void Notify(int score)
+    public void Notify(int score)
     {
         //foreach (var observer in observers)
         //{
         //    observer.Update(20);
         //}
 
-        observers.ForEach(x => x.Update(score));
+        if (updaters is not null)
+            updaters(score);
     }
 }
